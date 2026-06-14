@@ -24,37 +24,57 @@ export interface User extends RowDataPacket {
 
 export interface Employee extends RowDataPacket {
   id: number;
-  user_name: string;
-  user_email: string;
-  user_password: string;
+  user_id: number;
+  barbershop_id: number;
+  display_name: string;
+  created_at: string;
 }
 
 export interface Service extends RowDataPacket {
   id: number;
-  title: string;
-  slug: string;
-  text: string;
+  barbershop_id: number;
+  name: string;
+  description: string;
+  duration_min: number;
+  price: number;
+  is_active: number;
+
 }
 
 export interface Appointment extends RowDataPacket {
   id: number;
-  title: string;
-  slug: string;
-  text: string;
+  barbershop_id: number;
+  employee_id: number;
+  service_id: number;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: number;
+  start_datetime: string;
+  end_datetime: string;
+  status: string;
+  created_at: string;  
+  updated_at: string;  
+
+
 }
 
 export interface Schedule extends RowDataPacket {
   id: number;
-  title: string;
-  slug: string;
-  text: string;
+  employee_id: number;
+  day_of_week: number;
+  start_time: string;
+  end_time: string;
+  break_start: string;
+  break_end: string;
+  is_active: number;
 }
 
 export interface TimeOff extends RowDataPacket {
   id: number;
-  title: string;
-  slug: string;
-  text: string;
+  employee_id: number;
+  start_datetime: string;
+  end_datetime: string;
+  reason: string;
 }
 
 
