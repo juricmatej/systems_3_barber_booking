@@ -1,4 +1,5 @@
 import mysql, { ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import bcrypt from "bcrypt";
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -120,13 +121,21 @@ export const getUserByEmail = async (email: string): Promise<User[]> => {
 
 
 export const createUser = async (
-  username: string,
+  first_name: string,
+  last_name: string,
+  phone: number | null,
   email: string,
   password: string
+
+
 ): Promise<ResultSetHeader> => {
+
+  const password_hash= await bcrypt.hash(password, 10);
+
+
   const [result] = await pool.query<ResultSetHeader>(
-    "INSERT INTO user_login (user_name, user_email, user_password) VALUES (?, ?, ?)",
-    [username, email, password]
+    "INSERT INTO user_login (first_name, last_name, email, phone, password_hash) VALUES (?, ?, ?, ?, ?)",
+    [first_name, last_name, email, phone, password_hash]
   );
 
   return result;

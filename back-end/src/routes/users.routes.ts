@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { getUserByEmail } from "../db/database.js";
+import { getUserByEmail, createUser } from "../db/database.js";
 import bcrypt from "bcrypt";
 
 const router = Router();
@@ -76,34 +76,37 @@ const loginUser = async (
   }
 };
 
-/*
+
 const registerUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { username, email, password } = req.body as {
-      username?: string;
+    const { first_name, last_name, email, phone, password } = req.body as {
+      first_name?: string;
+      last_name?: string;
       email?: string;
+      phone?: number;
       password?: string;
     };
 
-    if (!username || !email || !password) {
+    if (!first_name || !last_name || !email || !password) {
       res.status(400).json({
         success: false,
-        message: "Username, email and password are required.",
+        message: "First name, last name, email and password are required.",
       });
 
       return;
     }
 
-    const queryResult = await createUser(username, email, password);
+    const queryResult = await createUser(first_name, last_name, phone ?? null, email, password, );
 
     if (queryResult.affectedRows === 1) {
       res.status(201).json({
         success: true,
         message: "User registered.",
+        user_id: queryResult.insertId,
       });
 
       return;
@@ -117,9 +120,9 @@ const registerUser = async (
     next(error);
   }
 };
-*/
+
 
 router.post("/login", loginUser);
-//router.post("/register", registerUser);
+router.post("/register", registerUser);
 
 export default router;
