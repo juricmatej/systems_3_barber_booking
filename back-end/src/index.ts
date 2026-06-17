@@ -1,9 +1,25 @@
 import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import usersRouter from "./routes/users.routes.js"
+import session from "express-session";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "temporary-development-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+      maxAge: 1000 * 60 * 60,
+    },
+  })
+);
+
 
 // Middleware for JSON request bodies
 app.use(express.json());
