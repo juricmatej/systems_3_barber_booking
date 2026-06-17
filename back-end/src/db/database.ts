@@ -134,7 +134,7 @@ export const createUser = async (
 
 
   const [result] = await pool.query<ResultSetHeader>(
-    "INSERT INTO user_login (first_name, last_name, email, phone, password_hash) VALUES (?, ?, ?, ?, ?)",
+    "INSERT INTO user (first_name, last_name, email, phone, password_hash) VALUES (?, ?, ?, ?, ?)",
     [first_name, last_name, email, phone, password_hash]
   );
 
