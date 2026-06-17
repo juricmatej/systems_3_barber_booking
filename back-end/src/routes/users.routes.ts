@@ -62,7 +62,7 @@ const loginUser = async (
 
     req.session.user = {
       id: user.id,
-      email: user.user_email,
+      email: user.email,
       role: user.role,
     };
 
