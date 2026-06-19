@@ -140,3 +140,18 @@ export const createUser = async (
 
   return result;
 };
+
+
+export const createEmployee = async (
+  user_id: number,
+  barbershop_id: number,
+  display_name: string,
+  bio: string,
+
+): Promise<ResultSetHeader> => {
+    const [result] = await pool.query<ResultSetHeader>(
+      "INSERT INTO employee (user_id, barbershop_id, display_name, bio) VALUES (?, ?, ?, ?)",
+      [user_id, barbershop_id, display_name, bio]
+    );
+    return result;
+};
