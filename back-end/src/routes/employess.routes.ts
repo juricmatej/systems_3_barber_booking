@@ -65,7 +65,8 @@ const getEmployees = async (
         res.status(400).json({
             success: false,
             message: "Need Barbershop ID"
-        })
+        });
+        return;
     }
 
     const employes = await getEmployess1(Number(barbershop_id));
