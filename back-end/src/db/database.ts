@@ -155,3 +155,62 @@ export const createEmployee = async (
     );
     return result;
 };
+
+export const getEmployess1 = async (
+    barbershop_id: number,
+): Promise<Employee[]> => {
+    const [rows] = await pool.query<Employee[]>(
+        `SELECT empl.id, empl.display_name, empl.bio, usr.first_name, usr.last_name
+        FROM employee empl
+        JOIN user usr ON empl.user_id = usr.id
+        WHERE usr.is_active = 1 AND empl.barbershop_id = ?  ` ,
+        [barbershop_id]
+    );
+    return rows;
+
+
+  };
+
+
+
+export const getServices = async (
+  barbershop_id: number,
+
+): Promise<Service[]> => {
+  const [rows] = await pool.query<Service[]>(
+    "SELECT * FROM services WHERE is_active = 1 AND barbershop_id = ?",
+    [barbershop_id]
+  );
+  return rows;
+}
+
+
+export const addService = async (
+  barbershop_id: number,
+  name: string,
+  description: string,
+  duration_min: number,
+  price: number,
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "INSERT INTO service (barbershop_id, name, description, duration_min, price) VALUES (?,?,?,?,?)",
+    [barbershop_id, name, description, duration_min, price]
+  );  
+  return result;
+};
+
+
+export const updateService = async (
+  id: number,
+  name: string,
+  description: string,
+  duration_min: number,
+  price: number,
+  is_active: number,
+): Promise<ResultSetHeader> => {
+    const [result] = await pool.query<ResultSetHeader>(
+      "UPDATE service SET name = ?, description = ?, duration_min = ?, price = ?, is_active = ? WHERE id = ?",
+      [id, name, description, duration_min, price, is_active]
+    )
+    return result;
+};
