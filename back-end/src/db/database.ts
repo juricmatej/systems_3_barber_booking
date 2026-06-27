@@ -283,4 +283,19 @@ export const AppointmentUpdateStatus = async (
   return result;
 }
 
-//need to add something to check for appointments with overlap times
+export const Overlap = async (
+  employee_id: number,
+  start_datetime: string,
+  end_datetime: string,
+
+): Promise<Appointment[]> => {
+  const [rows] = await pool.query<Appointment[]>(
+    `SELECT * FROM appointment
+     WHERE employee_id = ?
+     AND status != 'cancelled'
+     AND start_datetime < ?
+     AND end_datetime > ?`,
+     [employee_id, start_datetime, end_datetime]
+  );
+  return rows;
+}
