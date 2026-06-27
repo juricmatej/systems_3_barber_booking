@@ -35,7 +35,7 @@ app.use("/users", usersRouter);
 app.use("/services", usersRouter);
 app.use("/employess", usersRouter);
 app.use("/appointments", usersRouter);
-
+app.use("/schedule", usersRouter);
 // Central error handler
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error(error);

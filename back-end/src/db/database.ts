@@ -299,3 +299,65 @@ export const Overlap = async (
   );
   return rows;
 }
+
+
+export const getEmployeeSchedule = async (
+  employee_id: number,
+
+): Promise<Schedule[]> => {
+  const [rows] = await pool.query<Schedule[]>(
+    "SELECT * FROM schedule WHERE employee_id = ? ORDER BY day_of_week",
+    [employee_id]
+  );
+  return rows;
+};
+
+export const ScheduleDay = async (
+  employee_id: number,
+  day_of_week: number,
+  start_time: string,
+  end_time: string,
+  break_start: string,
+  break_end: string,
+  is_active: number,
+  
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    `INSERT INTO schedule (employee_id, day_of_week, start_time, end_time, break_start, break_end, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)
+     ON DUPLICATE KEY UPDATE
+     start_time = VALUES(start_time),
+     end_time = VALUES(end_time),
+     break_start = VALUES(break_start),
+     break_end = VALUES(break_end),
+     is_active = VALUES(is_active)`,
+    [employee_id, day_of_week, start_time, end_time, break_start, break_end, is_active]
+  );
+  return result;
+};
+
+
+export const EmployeeTimeOff = async (
+  employee_id: number,
+
+): Promise<TimeOff[]> => {
+  const [rows] = await pool.query<TimeOff[]>(
+    "SELECT * FROM timeoff WHERE employee_id = ? ORDER BY start_datetime",
+    [employee_id]
+  );
+  return rows;
+};
+
+
+export const createTimeOff = async (
+  employee_id: number,
+  start_datetime: string,
+  end_datetime: string,
+  reason: string,
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "INSERT INTO timeoff (employee_id, start_datetime, end_datetime, reason) VALUES (?, ?, ?, ?)",
+    [employee_id, start_datetime, end_datetime, reason]
+  );
+  return result;
+};
+
