@@ -1,5 +1,6 @@
 import mysql, { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import bcrypt from "bcrypt";
+import { appendFile, stat } from "node:fs";
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -214,3 +215,72 @@ export const updateService = async (
     )
     return result;
 };
+
+
+export const getAppointmentsAll = async (
+  barbershop_id: number,
+
+): Promise<Appointment[]> => {
+  const [rows] = await pool.query<Appointment[]>(
+    `SELECT app.*, ser.name AS serviceName, empl.display_name AS employeeName
+    FROM appointment app
+    JOIN service ser ON app.service_id = ser.id
+    JOIN employee empl ON app.employee_id = empl.id  
+    WHERE app.barbershop_id = ?
+    ORDER BY app.start_datetime DESC`,
+    [barbershop_id]
+
+  );
+  return rows;
+}
+
+
+export const getAppointmentEmployee = async (
+  employee_id: number
+
+): Promise<Appointment[]> => {
+  const [rows] = await pool.query<Appointment[]>(
+    `SELECT app.*, ser.name AS service_name
+     FROM appointment app
+     JOIN service ser ON app.service_id = ser.id
+     WHERE app.employee_id = ?
+     ORDER BY app.start_datetime DESC`,
+    [employee_id]
+  );
+  return rows;
+};
+
+
+export const createAppointment = async (
+  barbershop_id: number,
+  service_id: number,
+  employee_id: number,
+  customer_name: string,
+  customer_email: string,
+  customer_phone: string,
+  start_datetime: string,
+  end_datetime: string,
+  note: string,
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "INSERT INTO appointment (barbershop_id, service_id, employee_id, customer_name, customer_email, customer_phone, start_datetime, end_datetime, note, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')",
+    [barbershop_id, service_id, employee_id, customer_name, customer_email, customer_phone, start_datetime, end_datetime, note]
+  );
+  return result;
+};
+
+
+export const AppointmentUpdateStatus = async (
+  id: number,
+  status: string,
+
+
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE appointment SET status = ? WHERE id = ?",
+    [status, id]
+  );
+  return result;
+}
+
+//need to add something to check for appointments with overlap times
