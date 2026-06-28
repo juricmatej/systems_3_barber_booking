@@ -179,7 +179,7 @@ export const getServices = async (
 
 ): Promise<Service[]> => {
   const [rows] = await pool.query<Service[]>(
-    "SELECT * FROM service WHERE is_active = 1 AND barbershop_id = ?",
+    "SELECT * FROM services WHERE is_active = 1 AND barbershop_id = ?",
     [barbershop_id]
   );
   return rows;
@@ -194,7 +194,7 @@ export const addService = async (
   price: number,
 ): Promise<ResultSetHeader> => {
   const [result] = await pool.query<ResultSetHeader>(
-    "INSERT INTO service (barbershop_id, name, description, duration_min, price) VALUES (?,?,?,?,?)",
+    "INSERT INTO services (barbershop_id, name, description, duration_min, price) VALUES (?,?,?,?,?)",
     [barbershop_id, name, description, duration_min, price]
   );  
   return result;
@@ -210,7 +210,7 @@ export const updateService = async (
   is_active: number,
 ): Promise<ResultSetHeader> => {
     const [result] = await pool.query<ResultSetHeader>(
-      "UPDATE service SET name = ?, description = ?, duration_min = ?, price = ?, is_active = ? WHERE id = ?",
+      "UPDATE services SET name = ?, description = ?, duration_min = ?, price = ?, is_active = ? WHERE id = ?",
       [id, name, description, duration_min, price, is_active]
     )
     return result;
@@ -224,7 +224,7 @@ export const getAppointmentsAll = async (
   const [rows] = await pool.query<Appointment[]>(
     `SELECT app.*, ser.name AS serviceName, empl.display_name AS employeeName
     FROM appointment app
-    JOIN service ser ON app.service_id = ser.id
+    JOIN services ser ON app.service_id = ser.id
     JOIN employee empl ON app.employee_id = empl.id  
     WHERE app.barbershop_id = ?
     ORDER BY app.start_datetime DESC`,
@@ -242,7 +242,7 @@ export const getAppointmentEmployee = async (
   const [rows] = await pool.query<Appointment[]>(
     `SELECT app.*, ser.name AS service_name
      FROM appointment app
-     JOIN service ser ON app.service_id = ser.id
+     JOIN services ser ON app.service_id = ser.id
      WHERE app.employee_id = ?
      ORDER BY app.start_datetime DESC`,
     [employee_id]
