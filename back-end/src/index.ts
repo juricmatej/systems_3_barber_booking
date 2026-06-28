@@ -37,7 +37,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.use("/users", usersRouter);
 app.use("/services", servicesRouter);
-app.use("/employess", employeesRouter);
+app.use("/employees", employeesRouter);
 app.use("/appointments", appointmentsRouter);
 app.use("/schedule", scheduleRouter);
 // Central error handler
