@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import Menu from "../components/Menu";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
+import { BookingProvider } from "../context/BookingContext";
+import { Book } from "../pages/Book";
 
 export default function AppRouter() {
   return (
@@ -12,6 +14,8 @@ export default function AppRouter() {
      
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/book" element={<BookingProvider> <Book/ > </BookingProvider>  } />
+
 
       </Routes>
     </BrowserRouter>
