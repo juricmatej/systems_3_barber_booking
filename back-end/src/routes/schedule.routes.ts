@@ -36,12 +36,12 @@ const setScheduleDay = async (
         
     const { employee_id } = req.params;
 
-    const { day_of_week, start_time, end_time, break_start, break_end, is_active } = req.body as {
+    const { day_of_week, start_time, end_time, start_break, end_break, is_active } = req.body as {
       day_of_week?: number;
       start_time?: string;
       end_time?: string;
-      break_start?: string;
-      break_end?: string;
+      start_break?: string;
+      end_break?: string;
       is_active?: number;
 
     };
@@ -54,7 +54,7 @@ const setScheduleDay = async (
         return;
     }
 
-    const queryResult = await ScheduleDay(Number(employee_id), day_of_week, start_time ?? "", end_time ?? "", break_start ?? "", break_end ?? "", is_active ?? 1);
+    const queryResult = await ScheduleDay(Number(employee_id), day_of_week, start_time ?? "", end_time ?? "", start_break ?? "", end_break ?? "", is_active ?? 1);
     res.status(200).json({
         success: true,
         message: "Schedule updated",

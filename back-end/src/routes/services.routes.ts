@@ -126,6 +126,6 @@ const updateService1 = async (
 
 router.get("/", getServices1);
 router.post("/", requireLogin, requireAdmin, addService1);
-router.put("/", requireLogin, requireAdmin, updateService1);
+router.put("/:id", requireLogin, requireAdmin, updateService1);
 
 export default router;
