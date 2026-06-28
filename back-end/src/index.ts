@@ -2,6 +2,10 @@ import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import usersRouter from "./routes/users.routes.js"
 import session from "express-session";
+import employeesRouter from "./routes/employess.routes.js";
+import servicesRouter from "./routes/services.routes.js";
+import appointmentsRouter from "./routes/appointments.routes.js";
+import scheduleRouter from "./routes/schedule.routes.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -32,10 +36,10 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.use("/users", usersRouter);
-app.use("/services", usersRouter);
-app.use("/employess", usersRouter);
-app.use("/appointments", usersRouter);
-app.use("/schedule", usersRouter);
+app.use("/services", servicesRouter);
+app.use("/employess", employeesRouter);
+app.use("/appointments", appointmentsRouter);
+app.use("/schedule", scheduleRouter);
 // Central error handler
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error(error);
