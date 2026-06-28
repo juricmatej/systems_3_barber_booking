@@ -179,7 +179,7 @@ export const getServices = async (
 
 ): Promise<Service[]> => {
   const [rows] = await pool.query<Service[]>(
-    "SELECT * FROM services WHERE is_active = 1 AND barbershop_id = ?",
+    "SELECT * FROM service WHERE is_active = 1 AND barbershop_id = ?",
     [barbershop_id]
   );
   return rows;
