@@ -161,7 +161,7 @@ export const getEmployess1 = async (
     barbershop_id: number,
 ): Promise<Employee[]> => {
     const [rows] = await pool.query<Employee[]>(
-        `SELECT empl.id, empl.display_name, empl.bio, usr.first_name, usr.last_name
+        `SELECT empl.id, empl.user_id, empl.display_name, empl.bio, usr.first_name, usr.last_name
         FROM employee empl
         JOIN user usr ON empl.user_id = usr.id
         WHERE usr.is_active = 1 AND empl.barbershop_id = ?  ` ,

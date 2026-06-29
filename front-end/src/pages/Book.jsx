@@ -112,7 +112,7 @@ useEffect(() => {
                         <p>{ser.description}</p>
                         <p>{ser.duration_min} min - {ser.price} € </p>
                             <button onClick={() => { 
-                                setEmployeeId(ser.id); 
+                                setServiceId(ser.id); 
                                 setStep(3);}}>
                                 This
                             </button>
@@ -143,7 +143,7 @@ useEffect(() => {
                 </section>
 
             )}
-            {step == 3 && (
+            {step == 4 && (
                 <section>
                     <h1>Your info</h1>
                         <div>
