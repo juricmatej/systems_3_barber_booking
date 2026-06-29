@@ -13,6 +13,10 @@ const app = express();
 const port = Number(process.env.PORT) || 5000;
 
 
+app.use(cors({
+  origin: ["http://88.200.63.148:30051"],
+  credentials: true,
+}));
 
 app.use(
   session({
