@@ -211,7 +211,7 @@ export const updateService = async (
 ): Promise<ResultSetHeader> => {
     const [result] = await pool.query<ResultSetHeader>(
       "UPDATE services SET name = ?, description = ?, duration_min = ?, price = ?, is_active = ? WHERE id = ?",
-      [id, name, description, duration_min, price, is_active]
+      [name, description, duration_min, price, is_active, id]
     )
     return result;
 };
