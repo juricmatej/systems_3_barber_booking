@@ -6,9 +6,13 @@ import employeesRouter from "./routes/employess.routes.js";
 import servicesRouter from "./routes/services.routes.js";
 import appointmentsRouter from "./routes/appointments.routes.js";
 import scheduleRouter from "./routes/schedule.routes.js";
+import cors from "cors";
+
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
+
+
 
 app.use(
   session({

@@ -149,7 +149,7 @@ const updateStatus = async (
     const { status } = req.body as { status?: string }; 
 
     //SAMO TESNIIII
-    const statusi = ["1", "2", "3"];
+    const statusi = ["pending", "confirmed", "cancelled", "completed"];
     
     if (!status || !statusi.includes(status)){
         res.status(400).json({
