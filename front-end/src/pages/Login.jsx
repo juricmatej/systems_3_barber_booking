@@ -13,6 +13,7 @@ export default function Login() {
     try {
       const res = await fetch(`${API_URL}/users/login`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
