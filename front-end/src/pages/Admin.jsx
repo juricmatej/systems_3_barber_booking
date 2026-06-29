@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { API_URL } from "../api/api";
+import { useNavigate } from "react-router";
+import { getCurrentSession } from "../api/session";
+
+
+
 
 const barbershop_id = 1;
 
@@ -17,8 +22,22 @@ export default function Admin() {
   
   
   const [step, setStep] = useState(1);
+  
+  
+  const navigate = useNavigate();
+
 
   useEffect(() => {
+
+
+     async function init() {
+    const session = await getCurrentSession();
+    if (!session.loggedIn || session.user.role !== "admin") {
+      navigate("/login");
+      return;
+    }
+  } 
+    init();
     loadAppointments();
     loadServices();
   }, []);
