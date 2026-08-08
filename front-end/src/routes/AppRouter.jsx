@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import { BookingProvider } from "../context/BookingContext";
 import  Book  from "../pages/Book";
 import  Admin  from "../pages/Admin";
+import Home from "../pages/Home";
 
 export default function AppRouter() {
   return (
@@ -12,7 +13,8 @@ export default function AppRouter() {
       <Menu />
 
       <Routes>
-     
+
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/book" element={<BookingProvider> <Book/ > </BookingProvider>  } />

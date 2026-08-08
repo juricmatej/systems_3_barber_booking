@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
-const barbershop_id = 1;
+//const barbershop_id = 1;
 
 export default function Home() {
 
@@ -11,7 +11,7 @@ export default function Home() {
       <section className="news-hero">
         <h1>Dobrodošli v brivncio</h1>
         <Link to="/book">
-        <button Rezerviraj termin></button>
+        <button>Rezerviraj termin </button>
         </Link>
       </section>
 
