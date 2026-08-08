@@ -155,8 +155,10 @@ const updateStatus = async (
         res.status(400).json({
             success: false,
             message: "Status is not correct brotha"
+            
 
         })
+        return;
     }
 
     const queryResult = await AppointmentUpdateStatus(Number(id),  status ?? "");

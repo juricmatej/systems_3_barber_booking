@@ -117,7 +117,15 @@ const setTimeOff = async (
             success: true,
             message: "Time off aded"
         })
-    }
+      }
+
+
+    res.status(404).json({
+        success: false,
+        message: "Could not be added. Why ? ¯\_(ツ)_/¯ "
+    })
+
+
 } catch (error) {
     next(error)
 }
