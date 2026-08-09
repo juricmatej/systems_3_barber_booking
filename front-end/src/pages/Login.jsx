@@ -29,7 +29,7 @@ export default function Login() {
       if (res.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         setMessage("Login successful.");
-        window.location.href = "/";
+        window.location.href = "/admin";
       } else {
         setMessage(data.message || "Login failed.");
       }
