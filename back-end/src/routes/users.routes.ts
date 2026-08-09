@@ -114,6 +114,7 @@ const registerUser = async (
         message: "User registered.",
         user_id: queryResult.insertId,
       });
+       
 
       return;
     }
