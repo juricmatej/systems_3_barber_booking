@@ -5,15 +5,15 @@ const BookingContext = createContext();
 export function BookingProvider({ children }) {
   const [employeeId, setEmployeeId] = useState(null);
   const [serviceId, setServiceId] = useState(null);
-  const [startDateTime, setStartDateTime] = useState("");
-  const [endDateTime, setEndDateTime] = useState("");
+  const [startDatetime, setStartDatetime] = useState("");
+  const [endDatetime, setEndDatetime] = useState("");
 
   return (
     <BookingContext.Provider value={{
       employeeId, setEmployeeId,
       serviceId, setServiceId,
-      startDateTime, setStartDateTime,
-      endDateTime, setEndDateTime,
+      startDatetime, setStartDatetime,
+      endDatetime, setEndDatetime,
     }}>
       {children}
     </BookingContext.Provider>

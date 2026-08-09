@@ -46,7 +46,7 @@ export default function Login() {
 
         <form onSubmit={handleLogin}>
           <div>
-            <label>Username</label>
+            <label>Email</label>
             <input
               type="text"
               value={email}

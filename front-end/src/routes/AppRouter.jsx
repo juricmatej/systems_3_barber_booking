@@ -6,6 +6,7 @@ import { BookingProvider } from "../context/BookingContext";
 import  Book  from "../pages/Book";
 import  Admin  from "../pages/Admin";
 import Home from "../pages/Home";
+import Barber from "../pages/Barber";
 
 export default function AppRouter() {
   return (
@@ -19,6 +20,7 @@ export default function AppRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="/book" element={<BookingProvider> <Book/ > </BookingProvider>  } />
         <Route path="/admin" element={<Admin />} />
+        <Route path="barber" element={<Barber />} />
 
 
 
