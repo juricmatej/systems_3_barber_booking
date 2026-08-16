@@ -295,7 +295,7 @@ export const Overlap = async (
      AND status != 'cancelled'
      AND start_datetime < ?
      AND end_datetime > ?`,
-     [employee_id, start_datetime, end_datetime]
+     [employee_id, end_datetime, start_datetime]
   );
   return rows;
 }

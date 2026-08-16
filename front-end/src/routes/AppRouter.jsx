@@ -7,6 +7,7 @@ import  Book  from "../pages/Book";
 import  Admin  from "../pages/Admin";
 import Home from "../pages/Home";
 import Barber from "../pages/Barber";
+import RequireAuth from "../components/RequireAuth";
 
 export default function AppRouter() {
   return (
@@ -15,12 +16,12 @@ export default function AppRouter() {
 
       <Routes>
 
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/book" element={<BookingProvider> <Book/ > </BookingProvider>  } />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="barber" element={<Barber />} />
+        <Route path="/admin" element={<RequireAuth role="admin"><Admin /></RequireAuth>}  />
+        <Route path="barber" element={<RequireAuth role="employee"><Barber /></RequireAuth>}/>
 
 
 

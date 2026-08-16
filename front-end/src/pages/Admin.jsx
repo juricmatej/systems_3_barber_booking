@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { API_URL } from "../api/api";
+import { API_URL, barbershop_id} from "../api/api";
 import { useNavigate } from "react-router";
 import { getCurrentSession } from "../api/session";
 
 
 
 
-const barbershop_id = 1;
 
 export default function Admin() {
 
@@ -30,14 +29,15 @@ export default function Admin() {
   useEffect(() => {
 
 
-     async function init() {
+    /* async function init() {
     const session = await getCurrentSession();
     if (!session.loggedIn || session.user.role !== "admin") {
       navigate("/login");
       return;
     }
   } 
-    init();
+    */
+   // init();
     loadAppointments();
     loadServices();
   }, []);

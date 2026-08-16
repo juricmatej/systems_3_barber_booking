@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useBooking } from "../context/BookingContext";
-import { API_URL } from "../api/api";
+import { API_URL, barbershop_id } from "../api/api";
 
 
-const barbershop_id = 1;
 
 
 export default function Book(){
@@ -158,12 +157,12 @@ useEffect(() => {
                         </div>
                          <div>
                             <label>Phone</label>
-                                 <input type="email" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)}/>
+                                 <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)}/>
 
                         </div>
                          <div>
                             <label>note</label>
-                                 <input type="email" value={note} onChange={(e) => setNote(e.target.value)}/>
+                                 <input type="text" value={note} onChange={(e) => setNote(e.target.value)}/>
 
                         </div>
 
