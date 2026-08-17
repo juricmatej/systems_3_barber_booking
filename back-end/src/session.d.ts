@@ -6,6 +6,7 @@ declare module "express-session" {
       id: number;
       email: string;
       role: string;
+      barbershop_id?: number;
     };
   }
 }

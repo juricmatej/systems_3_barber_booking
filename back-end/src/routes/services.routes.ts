@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { requireLogin } from "../middleware/require-login.js";
 import { requireAdmin } from "../middleware/require-admin.js";
-import { createEmployee, getEmployess1 } from "../db/database.js";
+import { createEmployee, getEmployess1, getServiceById } from "../db/database.js";
 import { getServices, addService, updateService } from "../db/database.js";
 
 
@@ -39,13 +39,14 @@ const addService1 = async (
   next: NextFunction
 ) => {
   try {
-    const { barbershop_id, name, description, duration_min, price } = req.body as {
-        barbershop_id?: number,
+    const {  name, description, duration_min, price } = req.body as {
         name?: string,
         description?: string,
         duration_min?: number,
         price?: number,
     };
+
+    const barbershop_id = req.session.user!.barbershop_id;
 
     if (!barbershop_id || !name || !duration_min || !price) {
         res.status(400).json({
@@ -96,6 +97,16 @@ const updateService1 = async (
         res.status(400).json({
             success: false,
             message: "Activtiy status, name, duration and price are required",
+        });
+        return;
+    }
+
+    const services = await getServiceById(Number(id));
+
+     if (services.length == 0 || services[0].barbershop_id != req.session.user!.barbershop_id) {
+        res.status(400).json({
+            success: false,
+            message: "Not your service"
         });
         return;
     }

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { requireLogin } from "../middleware/require-login.js";
 import { requireAdmin } from "../middleware/require-admin.js";
-import { getAppointmentEmployee, getAppointmentsAll, createAppointment, AppointmentUpdateStatus, Overlap} from "../db/database.js";
+import { getAppointmentEmployee, getAppointmentsAll, createAppointment, AppointmentUpdateStatus, Overlap, getAppointmentById, getEmployeeByUserId, } from "../db/database.js";
 
 
 const router = Router();
@@ -14,7 +14,7 @@ const getAppointments = async (
 ) => {
   try {
 
-    const { barbershop_id } = req.query as { barbershop_id?: string };
+    const  barbershop_id  = req.session.user!.barbershop_id;
     if (!barbershop_id) {
         res.status(400).json({
             success: false,
@@ -23,7 +23,7 @@ const getAppointments = async (
         return;
     }
 
-    const appointments = await getAppointmentsAll(Number(barbershop_id));
+    const appointments = await getAppointmentsAll(barbershop_id);
     res.status(200).json(appointments);
 
 } catch (error) {
@@ -42,6 +42,17 @@ const getEmployeesAppointments = async (
   try {
 
     const { employee_id } = req.params;
+
+    const employees = await getEmployeeByUserId(req.session.user!.id);
+    const isOwner = employees.length > 0 && employees[0].id == Number(employee_id);
+
+    if (!isOwner && req.session.user!.role != "admin") {
+        res.status(400).json({
+            success: false,
+            message: "You can only see your appointments"
+        });
+        return;
+    }
 
     const service = await getAppointmentEmployee(Number(employee_id));
     res.status(200).json(service);
@@ -158,6 +169,34 @@ const updateStatus = async (
             
 
         })
+        return;
+    }
+
+    const appointments = await getAppointmentById(Number(id));
+
+    if (appointments.length == 0) {
+        res.status(400).json({
+            success: false,
+            message: "Appointment not found"
+        });
+        return;
+
+    }
+
+    const appointment = appointments[0];
+
+    const employees = await getEmployeeByUserId(req.session.user!.id);
+
+    const isOwner = employees.length > 0 && employees[0].id == appointment.employee_id;
+
+
+    const isBarberAdmin = req.session.user!.role == "admin" && appointment.barbershop_id == req.session.user!.barbershop_id;
+
+    if (!isOwner && !isBarberAdmin) {
+        res.status(403).json({
+            success: false,
+            message: "You cant change thiss"
+        });
         return;
     }
 

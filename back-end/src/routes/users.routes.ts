@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { getUserByEmail, createUser } from "../db/database.js";
+import { getUserByEmail, createUser, getEmployeeByUserId } from "../db/database.js";
 import bcrypt from "bcrypt";
 
 const router = Router();
@@ -60,10 +60,24 @@ const loginUser = async (
 
     }
 
+    const employees = await getEmployeeByUserId(user.id);
+
+    let barbershop_id;
+
+
+    if (employees.length > 0) {
+      barbershop_id = employees[0].barbershop_id;
+
+    } else{
+      barbershop_id = undefined;
+    }
+
+
     req.session.user = {
       id: user.id,
       email: user.email,
       role: user.role,
+      barbershop_id: barbershop_id,
     };
 
     res.status(200).json({

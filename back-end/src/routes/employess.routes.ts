@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { requireLogin } from "../middleware/require-login.js";
 import { requireAdmin } from "../middleware/require-admin.js";
-import { createEmployee, getEmployess1 } from "../db/database.js";
+import { createEmployee, getEmployeeByUserId, getEmployess1 } from "../db/database.js";
 // databes.ts 
 
 const router = Router();
@@ -13,13 +13,15 @@ const addEmployee = async (
   next: NextFunction
 ) => {
   try {
-    const { user_id, barbershop_id, display_name, bio } = req.body as {
+    const { user_id, display_name, bio } = req.body as {
         user_id?: number;
-        barbershop_id?: number;
         display_name?: string;
         bio?: string;
 
     };
+
+    const barbershop_id = req.session.user!.barbershop_id;
+
 
     if (!user_id || !barbershop_id || !display_name) {
         res.status(400).json({
@@ -78,9 +80,35 @@ const getEmployees = async (
 
 }
 
+const getMyEmployees = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+
+    
+    const employes = await getEmployeeByUserId(req.session.user!.id);
+
+    if (employes.length == 0) {
+        res.status(404).json({
+            success: false,
+            message: "this guy is not an employee"
+        });
+        return;
+    }
+    res.status(200).json(employes[0]);
+
+} catch (error) {
+    next(error)
+}
+
+}
+
+
 router.post("/", requireLogin, requireAdmin, addEmployee);
 router.get("/", getEmployees);
-
+router.get("/me", getMyEmployees);
 export default router;
 
 

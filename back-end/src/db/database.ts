@@ -361,3 +361,33 @@ export const createTimeOff = async (
   return result;
 };
 
+
+export const getServiceById = async (
+  id: number,
+): Promise<Service[]> => {
+  const [rows] = await pool.query<Service[]>(
+    "SELECT * FROM services WHERE id = ?",
+    [id]
+  );
+  return rows;
+};
+
+export const getAppointmentById = async (
+  id: number,
+): Promise<Appointment[]> => {
+  const [rows] = await pool.query<Appointment[]>(
+    "SELECT * FROM appointment WHERE id = ?",
+    [id]
+  );
+  return rows;
+};
+
+export const getEmployeeByUserId = async (
+  user_id: number,
+): Promise<Employee[]> => {
+  const [rows] = await pool.query<Employee[]>(
+    "SELECT * FROM employee WHERE user_id = ?",
+    [user_id]
+  );
+  return rows;
+};
