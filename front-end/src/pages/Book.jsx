@@ -72,7 +72,7 @@ useEffect(() => {
     async function loadData() {
         try {
             const res = await fetch(`${API_URL}/appointments/free?employee_id=${employeeId}&service_id=${serviceId}&date=${selectedDate}`);
-            setFreeSlots(await res.json);
+            setFreeSlots(await res.json());
         } catch (err) {
             console.log(err);
         }
@@ -164,7 +164,7 @@ useEffect(() => {
                     <h1>Select time and date</h1>
                         
                         <label>Date</label>
-                        <input type="data" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+                        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
 
                          {freeSlots.map((slot) => (
                               <button key={slot.start_datetime} onClick={() => {

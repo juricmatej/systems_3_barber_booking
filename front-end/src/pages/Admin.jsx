@@ -22,8 +22,22 @@ export default function Admin() {
   
   const [step, setStep] = useState(1);
   
+
+  const [filterByEmployee, setFilterByEmployee] = useState("");
   
   const navigate = useNavigate();
+
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [address, setAdress] = useState("");
+  const [city, setCity] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
+
+
+  
 
 
   useEffect(() => {
@@ -40,6 +54,7 @@ export default function Admin() {
    // init();
     loadAppointments();
     loadServices();
+    loadBarbershop();
   }, []);
 
   async function loadAppointments() {
@@ -62,6 +77,25 @@ try {
 }
 
 }
+
+async function loadBarbershop() {
+    try {
+        const res = await fetch(`${API_URL}/barbershops/${barbershop_id}`);
+
+        const data = await res.json();
+
+        setName(data.name);
+        setDescription(data.description);
+        setAdress(data.address);
+        setCity(data.city);
+        setPhone(data.phone);
+        setEmail(data.email);
+
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function updateStatus(id, status) {
     try {
@@ -133,6 +167,71 @@ try {
     
   }
 
+
+  const employeeOpt = [];
+  const employeeSeen = new Set ();
+
+  appointments.forEach((app) =>  {
+    if (!employeeSeen.has(app.employee_id)) {
+        employeeSeen.add(app.employee_id);
+        employeeOpt.push({ id: app.employee_id, name: app.employeeName });
+    }
+  });
+
+
+  const filterApp = appointments.filter((app) => {
+    if(filterByEmployee && String(app.employee_id) != filterByEmployee) {
+      return false;
+    }
+
+    return true;
+  });
+
+
+  const now = new Date();
+
+
+
+  const upcomng = filterApp.filter((app) => new Date(app.start_datetime) >= now);
+
+  const past = filterApp.filter((app) => new Date (app.start_datetime) < now) ;
+  
+  const totalApp = filterApp.length;
+
+
+
+
+async function barbershopSave() {
+
+  try {
+    
+    const res = await fetch (`${API_URL}/barbershops/${barbershop_id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        address: address,
+        city: city,
+        phone: phone,
+        email: email,
+        }),
+
+
+        
+    })
+
+   
+  
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
   return (
     <main>
       <h1>Admin</h1>
@@ -140,19 +239,53 @@ try {
       <button onClick={() => setStep("1")}>Apointmentts</button>
       <button onClick={() => setStep("2")}>Services</button>
       <button onClick={() => setStep("3")}>ADD Employee</button>
+      <button onClick={() => setStep("4")}>Barbereshop</button>
+
 
       {step == "1" && (
         <section>
           
           <h2>Appointments</h2>
-              {appointments.map((app) => (
+         <div>
+            <label>Emplyoee</label>
+                    <select value={filterByEmployee} onChange={(e) => setFilterByEmployee(e.target.value)}>
+                     <option value="">All employeees</option>
+                       {employeeOpt.map((empl) => (
+                     <option key={empl.id} value={empl.id}>{empl.name}</option>
+                                        ))}
+                </select>
+                                        
+          </div>
+                  <p>All appointments: {totalApp}</p>
+
+                  <h2>UPComing</h2>
+              {upcomng.map((app) => (
            
            <div key={app.id}>
               <p>{app.start_datetime} — {app.customer_name} — {app.employeeName} — {app.serviceName} — {app.status}</p>
+                
+                
+                
                 <button onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
                  <button onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
                     <button onClick={() => updateStatus(app.id, "completed")}>Complete</button>
     </div>
+    
+          ))}
+
+                  <h2>Past</h2>
+              {past.map((app) => (
+           
+           <div key={app.id}>
+              <p>{app.start_datetime} — {app.customer_name} — {app.employeeName} — {app.serviceName} — {app.status}</p>
+                
+                
+                
+                <button onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
+                 <button onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
+                    <button onClick={() => updateStatus(app.id, "completed")}>Complete</button>
+    </div>
+    
           ))}
         </section>
       )}
@@ -219,6 +352,47 @@ try {
           
           
           <button onClick={addEmployee}>Employee +</button>
+        </section>
+      )}
+      {step == "4" && (
+        <section>
+             <h2>Barbershop</h2>
+
+              <div>
+                    <label>Name</label>
+                   
+                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
+          <div>
+
+                    <label>Description</label>
+                         <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                  </div>
+
+
+
+          <div>
+            
+            
+                <label>Address</label>
+                   <input type="text" value={address} onChange={(e) => setAdress(e.target.value)} />
+          </div>
+          <div>
+
+              <label>City</label>
+                   <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+          </div>
+            <div>
+                  <label>Phone</label>
+                       <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          </div>
+              <div>
+                 <label>Email</label>
+                     <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+
+                <button onClick={barbershopSave}>Save</button>
+
         </section>
       )}
     </main>

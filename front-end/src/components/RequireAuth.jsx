@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 
-export default function RequireAuth ({role, prop}) {
+export default function RequireAuth ({role, children}) {
 
 
     const navigate = useNavigate();
@@ -48,5 +48,5 @@ export default function RequireAuth ({role, prop}) {
         return null;
     }
 
-    return prop;
+    return children;
 }

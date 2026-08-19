@@ -117,6 +117,7 @@ const setTimeOff = async (
             success: true,
             message: "Time off aded"
         })
+        return;
       }
 
 

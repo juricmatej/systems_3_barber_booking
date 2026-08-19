@@ -7,7 +7,7 @@ import servicesRouter from "./routes/services.routes.js";
 import appointmentsRouter from "./routes/appointments.routes.js";
 import scheduleRouter from "./routes/schedule.routes.js";
 import cors from "cors";
-
+import barbershopRouter from "./routes/barbershops.routes.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -48,6 +48,7 @@ app.use("/services", servicesRouter);
 app.use("/employees", employeesRouter);
 app.use("/appointments", appointmentsRouter);
 app.use("/schedule", scheduleRouter);
+app.use("/barbershops", barbershopRouter);
 // Central error handler
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error(error);

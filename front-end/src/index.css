@@ -130,3 +130,11 @@ button {
 button:hover {
   background-color: #1d4ed8;
 }
+
+span {
+  padding: 10px 18px;
+  border-radius: 10px;
+  color: #374151;
+  font-size: 1.2rem;
+  font-weight: 700;
+}

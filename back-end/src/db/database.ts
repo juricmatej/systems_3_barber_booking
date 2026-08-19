@@ -80,6 +80,19 @@ export interface TimeOff extends RowDataPacket {
 }
 
 
+export interface Barbershop extends RowDataPacket {
+  id: number;
+  name: string;
+  description: string;
+  address: string;
+  city: string;
+  phone: number;
+  email: string;
+  created_at: string;
+  is_active: number;
+}
+
+
  /*
   export const allNews = async (): Promise<NewsItem[]> => {
   const [rows] = await pool.query<NewsItem[]>("SELECT * FROM news");
@@ -511,3 +524,33 @@ export const getFreeSlots = async (
 
   return slots;
 };
+
+
+export const getBarbershop = async (
+  barbershop_id: number,
+): Promise<Barbershop[]> => {
+  const [rows] = await pool.query<Barbershop[]>(
+    "SELECT * FROM barbershop WHERE id = ?",
+    [barbershop_id]
+
+  );
+  return rows;
+}
+
+
+export const updateBarbershop = async (
+  id: number,
+  name: string,
+  description: string,
+  address: string,
+  city: string,
+  phone: number | null,
+  email: string,
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE barbershop SET name = ?, description = ?, address = ?, city = ?, phone = ?, email = ? WHERE id = ?",
+    [name, description, address, city, phone, email, id]
+
+  );
+  return result;
+}

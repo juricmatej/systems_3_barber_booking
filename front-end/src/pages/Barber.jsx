@@ -3,7 +3,10 @@ import { useState, useEffect } from "react";
 
 
 const dayNames = ["", "Monday", "Tuesday", "Wednsday", "Thursday", "Firday", "Sunday", "Saturday"];
-  
+
+export default function Barber() {
+    
+    
 
   //  const { employeeId, setEmployeeId } = useBooking();
     const [schedule, setSchedule] = useState([]); 
@@ -28,8 +31,6 @@ const dayNames = ["", "Monday", "Tuesday", "Wednsday", "Thursday", "Firday", "Su
     
     const [step, setStep] = useState(1);
 
-export default function Barber() {
-    
     useEffect(() => {
         async function loadData() {
             try {
@@ -48,7 +49,7 @@ export default function Barber() {
           
         }
 
-        loadData;
+        loadData();
     }, []);
 
     useEffect(() => {
@@ -61,7 +62,7 @@ export default function Barber() {
         loadSchedule();
         loadTimeOff();
 
-    }, {employee});
+    }, [employee]);
 
 
 
@@ -130,7 +131,7 @@ export default function Barber() {
   async function addTimeOff() {
         try {
             const res = await fetch(`${API_URL}/schedule/${employee.id}/timeoff`, {
-                 method: "POSR",
+                 method: "POST",
                  headers: { "Content-Type": "application/json" },
                  credentials: "include",
                  body: JSON.stringify({

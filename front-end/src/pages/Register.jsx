@@ -25,6 +25,7 @@ export default function Register() {
           last_name,
           email,
           password,
+          phoneNumber,
         }),
       });
 
