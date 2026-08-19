@@ -391,3 +391,123 @@ export const getEmployeeByUserId = async (
   );
   return rows;
 };
+
+
+export const getFreeSlots = async (
+  employee_id: number,
+  date: string,
+  duration_min: number,
+): Promise<{ start_datetime: string; end_datetime: string }[]> => {
+  const jsDate = new Date(date);
+  const jsDay = jsDate.getDay();
+  
+  let day_of_week;
+
+  if (jsDay == 0) {
+    day_of_week = 7;
+  } else {
+    day_of_week = jsDay;
+  }
+
+  const [scheduleRows] = await pool.query<Schedule[]>(
+    "SELECT * FROM schedule WHERE employee_id = ? AND day_of_week = ? AND is_active = 1",
+    [employee_id, day_of_week]
+  );
+  if (scheduleRows.length == 0) {
+    return [];
+  }
+
+  const daySchedule = scheduleRows[0];
+
+  
+
+  const [timeOffRows] = await pool.query<TimeOff[]>(
+    "SELECT * FROM timeoff WHERE employee_id = ? AND start_datetime < ? AND end_datetime > ?",
+    [employee_id, `${date} 23:59:59`, `${date} 00:00:00`]
+  );
+
+  const [appointmentRows] = await pool.query<Appointment[]>(
+    "SELECT * FROM appointment WHERE employee_id = ? AND status != 'cancelled' AND start_datetime < ? AND end_datetime > ?",
+    [employee_id, `${date} 23:59:59`, `${date} 00:00:00`]
+  );
+
+  const toMinutes = (time: string) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+
+
+  const workStart = toMinutes(daySchedule.start_time);
+  const workEnd = toMinutes(daySchedule.end_time);
+
+
+  const toTimeString = (totalMinutes: number) => {
+    const hours = String(Math.floor(totalMinutes / 60)).padStart(2, "0");
+    const minutes = String(totalMinutes % 60).padStart(2, "0");
+    return `${hours}:${minutes}:00`;
+  };
+
+  const overlaps = (start: number, end: number, otherStart: number, otherEnd: number) => {
+    
+    
+    
+    
+    
+    return start < otherEnd && end > otherStart;
+  };
+
+  let breakStart;
+
+  if (daySchedule.break_start) {
+    breakStart = toMinutes(daySchedule.break_start);
+  } else {
+    breakStart = null;
+  }
+
+
+
+
+  let breakEnd;
+
+  if (daySchedule.break_end) {
+    breakEnd = toMinutes(daySchedule.break_end);
+  } else {
+    breakEnd = null;
+  }
+
+  const slots: { start_datetime: string; end_datetime: string }[] = [];
+
+  for (let slotStart = workStart; slotStart + duration_min <= workEnd; slotStart += duration_min) {
+    
+    
+    
+    const slotEnd = slotStart + duration_min;
+
+    if (breakStart != null && breakEnd != null && overlaps(slotStart, slotEnd, breakStart, breakEnd)) {
+      continue;
+    }
+
+    const slotStartDatetime = `${date} ${toTimeString(slotStart)}`;
+    const slotEndDatetime = `${date} ${toTimeString(slotEnd)}`;
+
+    const blockedByTimeOff = timeOffRows.some((off) =>
+      slotStartDatetime < off.end_datetime && slotEndDatetime > off.start_datetime
+    );
+
+    if (blockedByTimeOff) {
+      continue;
+    }
+
+    const blockedByAppointment = appointmentRows.some((app) =>
+      slotStartDatetime < app.end_datetime && slotEndDatetime > app.start_datetime
+    );
+
+    if (blockedByAppointment) {
+      continue;
+    }
+
+    slots.push({ start_datetime: slotStartDatetime, end_datetime: slotEndDatetime });
+  }
+
+  return slots;
+};

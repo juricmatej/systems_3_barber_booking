@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { requireLogin } from "../middleware/require-login.js";
 import { requireAdmin } from "../middleware/require-admin.js";
-import { getAppointmentEmployee, getAppointmentsAll, createAppointment, AppointmentUpdateStatus, Overlap, getAppointmentById, getEmployeeByUserId, } from "../db/database.js";
+import { getAppointmentEmployee, getAppointmentsAll, createAppointment, AppointmentUpdateStatus, Overlap, getAppointmentById, getEmployeeByUserId, getServiceById, getFreeSlots, } from "../db/database.js";
+import { serialize } from "node:v8";
 
 
 const router = Router();
@@ -223,10 +224,60 @@ const updateStatus = async (
 }
 
 
+const getFreeAppointments = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+
+    const { employee_id, service_id, date } = req.query as {
+         employee_id?: string;
+         service_id?: string;
+         date?: string;
+    }
+    
+    if (!employee_id || !service_id || !date ){
+        res.status(400).json({
+            success: false,
+            message: "Need employee id, service id nad date"
+            
+
+        })
+        return;
+    }
+
+    const services = await getServiceById(Number(service_id));
+
+    if (services.length == 0) {
+        res.status(400).json({
+            success: false,
+            message: "Service not found"
+        });
+        return;
+
+    }
+
+    const slots = await getFreeSlots(Number(employee_id), date, services[0].duration_min);
+    
+
+    res.status(200).json(slots);
+
+
+} catch (error) {
+    next(error)
+}
+
+}
+
+
+
+
 
 router.post("/", addAppointment);
 router.get("/", requireLogin, requireAdmin, getAppointments);
 router.get("/employee/:employee_id", requireLogin, getEmployeesAppointments);
 router.put("/:id/status", requireLogin, updateStatus);
+router.get("/free", getFreeAppointments);
 
 export default router;

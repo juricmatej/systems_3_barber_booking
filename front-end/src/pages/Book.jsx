@@ -20,10 +20,29 @@ export default function Book(){
 
 
 
+
     const [message, setMessage] = useState("");
 
 
+    const [selectedDate, setSelectedDate] = useState("");
+    const [freeSlots, setFreeSlots] = useState([]);
+
     const [step, setStep] = useState(1);
+    
+
+    function calculateEndTime(start, durationMin) {
+         const startDate = new Date(start);
+         const endDate = new Date(startDate.getTime() + durationMin * 60000);
+
+         const addZero = (value) => String(value).padStart(2, "0");
+
+         return `${endDate.getFullYear()}-${addZero(endDate.getMonth() + 1)}-${addZero(endDate.getDate())}T${addZero(endDate.getHours())}:${addZero(endDate.getMinutes())}`;
+}   
+
+
+
+
+
 
 useEffect(() => {
     async function loadData() {
@@ -43,6 +62,24 @@ useEffect(() => {
     loadData();
   }, []);
 
+  useEffect(() => {
+
+    if (!employeeId || !serviceId || !selectedDate) {
+        return;
+    }
+
+
+    async function loadData() {
+        try {
+            const res = await fetch(`${API_URL}/appointments/free?employee_id=${employeeId}&service_id=${serviceId}&date=${selectedDate}`);
+            setFreeSlots(await res.json);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    loadData();
+  }, [employeeId, serviceId, selectedDate]);
 
 
   async function Submit() {
@@ -57,16 +94,16 @@ useEffect(() => {
           customer_name: customerName,
           customer_email: customerEmail,
           customer_phone: customerPhone,
-          start_datetime: startDatetime,
-          end_datetime: endDatetime,
+          start_datetime: startDatetime.replace("T", " "),
+          end_datetime: endDatetime.replace("T", " "),
           note: note,
         }),
       });
 
-      
+    
     
     if(res.ok) {
-        setMessage("You have successfully booked!");
+        setStep(5);
     } else{
         setMessage("Error in reservation");
     }
@@ -125,16 +162,22 @@ useEffect(() => {
               {step == 3 && (
                 <section>
                     <h1>Select time and date</h1>
-                        <div>
-                            <label>Start time</label>
-                                 <input type="datetime-local" value={startDatetime} onChange={(e) => setStartDatetime(e.target.value)}/>
+                        
+                        <label>Date</label>
+                        <input type="data" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
 
-                        </div>
-                         <div>
-                            <label>End time</label>
-                                 <input type="datetime-local" value={endDatetime} onChange={(e) => setEndDatetime(e.target.value)}/>
+                         {freeSlots.map((slot) => (
+                              <button key={slot.start_datetime} onClick={() => {
+                                setStartDatetime(slot.start_datetime);
+                                setEndDatetime(slot.end_datetime);
+                                setStep(4);
+                                  }}
+                                                >
+                              {slot.start_datetime.slice(11, 16)}
+             </button>
+        ))}
 
-                        </div>
+
 
                     <button onClick={() => setStep(1)}>Go Back</button>
                     <button onClick={() => setStep(4)}>Next</button>
@@ -172,6 +215,21 @@ useEffect(() => {
                 </section>
 
             )}
+            {step == 5 && (
+                <section>
+                    <h1>Reservation Booked !</h1>
+                        <div>
+                                <p>Barber: {employees.find((empl) => empl.id == employeeId)?.display_name}</p>
+                                <p>Service: {services.find((ser) => ser.id == serviceId)?.name}</p>
+                                <p>When: {startDatetime.replace("T", " ")} — {endDatetime.replace("T", " ")}</p>
+                                <p>Who: {customerName}</p>
+                                <p>Email: {customerEmail}</p>
+                        </div>
+                        
+                </section>
+
+            )}
+
 
         </main>
 
