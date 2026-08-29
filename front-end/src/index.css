@@ -138,3 +138,97 @@ span {
   font-size: 1.2rem;
   font-weight: 700;
 }
+
+
+
+main section {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+main section > div {
+  margin-bottom: 16px;
+}
+
+main section button {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+
+main section {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+main section > div {
+  margin-bottom: 16px;
+}
+
+main section button {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.time-slots button {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  margin: 0;
+}
+
+.time-slots button:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+button.secondary {
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+button.secondary:hover {
+  background-color: #f3f4f6;
+}
+
+.news-hero h1 {
+  margin-bottom: 12px;
+}
+
+.news-hero p {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.news-hero p:first-of-type {
+  color: #213547;
+  font-size: 1.1rem;
+}
+
+.news-hero button {
+  margin-top: 12px;
+}
+
+main section input[type="date"] {
+  max-width: 280px;
+  margin: 0 auto 16px;
+}
+
+main section .time-slots {
+  justify-content: center;
+}

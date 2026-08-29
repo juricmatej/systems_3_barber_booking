@@ -166,6 +166,7 @@ useEffect(() => {
                         <label>Date</label>
                         <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
 
+                         <div className="time-slots">
                          {freeSlots.map((slot) => (
                               <button key={slot.start_datetime} onClick={() => {
                                 setStartDatetime(slot.start_datetime);
@@ -175,11 +176,13 @@ useEffect(() => {
                                                 >
                               {slot.start_datetime.slice(11, 16)}
              </button>
+
         ))}
+        </div>
 
 
 
-                    <button onClick={() => setStep(1)}>Go Back</button>
+                    <button className="secondary" onClick={() => setStep(1)}>Go Back</button>
                     <button onClick={() => setStep(4)}>Next</button>
 
                 </section>

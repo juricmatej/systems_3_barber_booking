@@ -52,10 +52,10 @@ const updateBarbershopId = async (
     }
 
 
-    const {name, description, address, city, phone, email} = req.body as {
+    const {name, description, adress, city, phone, email} = req.body as {
         name?: string;
         description?: string;
-        address?: string;
+        adress?: string;
         city?: string;
         phone?: number;
         email?: string;
@@ -64,7 +64,7 @@ const updateBarbershopId = async (
 
 
     
-    if (!name || !address || !city) {
+    if (!name || !adress || !city) {
         res.status(400).json({
             success: false,
             message: "name, address and city are requiresd"
@@ -73,7 +73,7 @@ const updateBarbershopId = async (
         return;
     }
 
-    const queryResult = await updateBarbershop(Number(id), name, description ?? "", address, city, phone ?? null, email ?? "");
+    const queryResult = await updateBarbershop(Number(id), name, description ?? "", adress, city, phone ?? null, email ?? "");
     
 
           if (queryResult.affectedRows == 1) {

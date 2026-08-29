@@ -488,6 +488,10 @@ export const getFreeSlots = async (
     breakEnd = null;
   }
 
+  console.log("daySchedule:", daySchedule);
+  console.log("breakStart:", breakStart, "breakEnd:", breakEnd);
+
+
   const slots: { start_datetime: string; end_datetime: string }[] = [];
 
   for (let slotStart = workStart; slotStart + duration_min <= workEnd; slotStart += duration_min) {
@@ -523,6 +527,8 @@ export const getFreeSlots = async (
   }
 
   return slots;
+
+  
 };
 
 
@@ -554,3 +560,4 @@ export const updateBarbershop = async (
   );
   return result;
 }
+
