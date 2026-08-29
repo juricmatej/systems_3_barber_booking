@@ -30,12 +30,12 @@ export default function Admin() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [address, setAdress] = useState("");
+  const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-
+  const [message, setMessage] = useState("");
 
   
 
@@ -86,7 +86,7 @@ async function loadBarbershop() {
 
         setName(data.name);
         setDescription(data.description);
-        setAdress(data.address);
+        setAddress(data.address);
         setCity(data.city);
         setPhone(data.phone);
         setEmail(data.email);
@@ -160,7 +160,12 @@ async function loadBarbershop() {
       setNewEmpUserId("");
       setNewEmpDisplayName("");
       setNewEmpBio("");
-    } 
+      setMessage("Employee aded")
+    } else {
+      setMessage("Employee not added")
+    }
+
+
     } catch (error) {
       console.log(error);
     }
@@ -235,6 +240,8 @@ async function barbershopSave() {
   return (
     <main>
       <h1>Admin</h1>
+
+      {message && <p>{message}</p>}
 
       <button onClick={() => setStep("1")}>Apointmentts</button>
       <button onClick={() => setStep("2")}>Services</button>
@@ -375,7 +382,7 @@ async function barbershopSave() {
             
             
                 <label>Address</label>
-                   <input type="text" value={address} onChange={(e) => setAdress(e.target.value)} />
+                   <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
           <div>
 

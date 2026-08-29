@@ -122,7 +122,7 @@ const addAppointment = async (
         employee_id,
         customer_name,
         customer_email,
-        customer_phone ?? "",
+        Number(customer_phone ?? ""),
         start_datetime,
         end_datetime,
         note ?? ""

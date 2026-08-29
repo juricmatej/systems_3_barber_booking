@@ -270,7 +270,7 @@ export const createAppointment = async (
   employee_id: number,
   customer_name: string,
   customer_email: string,
-  customer_phone: string,
+  customer_phone: number,
   start_datetime: string,
   end_datetime: string,
   note: string,
@@ -561,3 +561,15 @@ export const updateBarbershop = async (
   return result;
 }
 
+
+export const checkForEmployment = async (   
+  user_id: number,
+  barbershop_id: number,
+): Promise<Employee[]> => {
+  const [rows] = await pool.query<Employee[]>(
+    "SELECT * FROM employee WHERE user_id = ? AND barbershop_id = ?",
+    [user_id, barbershop_id]
+   
+  );
+  return rows;   
+}

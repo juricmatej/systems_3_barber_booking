@@ -18,7 +18,7 @@ body {
 
 main {
   width: 100%;
-  max-width: 900px;
+  max-width: 750px;
   margin: 0 auto;
   padding: 32px 20px;
 }
@@ -232,3 +232,80 @@ main section input[type="date"] {
 main section .time-slots {
   justify-content: center;
 }
+
+
+
+.boxed-like-a-fish {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid gray;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+
+.service-left h2 {
+  margin: 0 0 4px 0;
+}
+
+.service-left p {
+  margin: 0;
+  color: gray;
+}
+
+.service-right {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.boxed {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+   padding: 12px 16px;
+    border: 2px solid lightgreen;
+  border-radius: 8px;
+  margin-bottom: 12px;
+
+}
+
+.boxed-left h3 {
+    margin: 0 0 4px 0;
+
+}
+
+
+.boxed-left p {
+    margin: 0;
+  color: gray;
+}
+
+
+.boxed-right {
+  align-items: center;
+  margin: 0;
+}
+
+#date {
+font-weight: 600;
+
+}
+
+
+.customer-info p {
+  margin: 8px 0;
+}
+
+.customer-info strong {
+  color: black;
+}
+

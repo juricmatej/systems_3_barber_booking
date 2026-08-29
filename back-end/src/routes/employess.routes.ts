@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { requireLogin } from "../middleware/require-login.js";
 import { requireAdmin } from "../middleware/require-admin.js";
-import { createEmployee, getEmployeeByUserId, getEmployess1 } from "../db/database.js";
+import { createEmployee, getEmployeeByUserId, getEmployess1, checkForEmployment } from "../db/database.js";
 // databes.ts 
 
 const router = Router();
@@ -29,6 +29,15 @@ const addEmployee = async (
             message: "Users id, name and barbershops id are needed",
         });
         return;
+    }
+
+    const isJobless = await checkForEmployment(user_id, barbershop_id);
+
+    if (isJobless > 0) {
+        res.status(400).json({
+            success: false,
+            message: "This guy alraedy works here„"
+        })
     }
 
     const queryResult = await createEmployee(user_id, barbershop_id, display_name, bio ?? "");

@@ -93,7 +93,7 @@ useEffect(() => {
           employee_id: employeeId,
           customer_name: customerName,
           customer_email: customerEmail,
-          customer_phone: customerPhone,
+          customer_phone: customerPhone.replace(/\D/g, ""), //everything that is not a number gets cut 
           start_datetime: startDatetime.replace("T", " "),
           end_datetime: endDatetime.replace("T", " "),
           note: note,
@@ -122,15 +122,15 @@ useEffect(() => {
 
             {step == 1 && (
                 <section>
-                    <h1>babrer</h1>
+                    <h1>Select a barber:</h1>
                 {employees.map((empl) => (
-                    <div key={empl.id}>
+                    <div className="boxed-like-a-fish" key={empl.id}>
                         <h2>{empl.display_name}</h2>
                             <button onClick={() => { 
                                 setEmployeeId(empl.id); 
                                 setStep(2);
                                 }}>
-                                Me !
+                            Choose
                             </button>
                     </div>
                     
@@ -141,17 +141,23 @@ useEffect(() => {
             )}
             {step == 2 && (
                 <section>
-                    <h1>Service</h1>
+                    <h1>Services</h1>
                 {services.map((ser) => (
-                    <div key={ser.id}>
+                    <div className="boxed-like-a-fish" key={ser.id}>
+                        <div className="service-left">
                         <h2>{ser.name}</h2>
                         <p>{ser.description}</p>
+                        </div>
+                        <div className="service-right">
+                            <div className="price">
                         <p>{ser.duration_min} min - {ser.price} € </p>
+                        </div>
                             <button onClick={() => { 
                                 setServiceId(ser.id); 
                                 setStep(3);}}>
-                                This
+                                Choose
                             </button>
+                            </div>
                     </div>
                     
                 ) )}
@@ -190,24 +196,24 @@ useEffect(() => {
             )}
             {step == 4 && (
                 <section>
-                    <h1>Your info</h1>
+                    <h1>Your Information</h1>
                         <div>
-                            <label>Name and surname *</label>
+                            <label>Name and surname*</label>
                                  <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)}/>
 
                         </div>
                          <div>
-                            <label>Email *</label>
+                            <label>Email</label>
                                  <input type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)}/>
 
                         </div>
                          <div>
-                            <label>Phone</label>
+                            <label>Phone*</label>
                                  <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)}/>
 
                         </div>
                          <div>
-                            <label>note</label>
+                            <label>Note</label>
                                  <input type="text" value={note} onChange={(e) => setNote(e.target.value)}/>
 
                         </div>
@@ -222,11 +228,30 @@ useEffect(() => {
                 <section>
                     <h1>Reservation Booked !</h1>
                         <div>
-                                <p>Barber: {employees.find((empl) => empl.id == employeeId)?.display_name}</p>
+
+                                <div className="boxed">
+
+                                <div className="boxed-left"> 
+                                <h3>{employees.find((empl) => empl.id == employeeId)?.display_name}</h3>
                                 <p>Service: {services.find((ser) => ser.id == serviceId)?.name}</p>
-                                <p>When: {startDatetime.replace("T", " ")} — {endDatetime.replace("T", " ")}</p>
-                                <p>Who: {customerName}</p>
-                                <p>Email: {customerEmail}</p>
+                                </div>   
+                                <div className="customer-info">
+
+                              
+                                <p><strong>Who:</strong> {customerName}</p>
+                                {customerEmail && <p> <strong>Email:</strong> {customerEmail}</p>}
+                                {customerPhone && <p><strong>Phone:</strong>{customerPhone}</p>}
+                                </div>
+                                <div className="boxed-right">
+                                  <p id="date">{startDatetime.split(" ")[0]}</p>
+                                  <p> {startDatetime.split(" ")[1].slice(0, 5)}-{endDatetime.split(" ")[1].slice(0, 5)}</p>
+                                </div>
+                           
+                              
+                                </div>
+                                 
+
+
                         </div>
                         
                 </section>
