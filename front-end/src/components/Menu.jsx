@@ -45,7 +45,7 @@ export default function Menu() {
 
   if (!user) {
     return (
-      <nav className="navbar">
+      <nav className="navbar px-4">
         <Link to="/">Home</Link>
         <div>
         <Link to="/login">Login</Link>
@@ -61,7 +61,7 @@ export default function Menu() {
     <nav>
       <Link to="/">Home</Link>
       {user.role == "admin" && <Link to="/admin">Admin</Link>}
-      {user.role == "employee" && <Link to="/barber">Employee</Link>}
+      {(user.role == "employee" || user.role == "admin") && <Link to="/barber">Employee</Link>}
       <span>Logged in as: {user.email}</span>
       <button className="btn btn-primary" onClick={handleLogout}>Logout</button>
     </nav>

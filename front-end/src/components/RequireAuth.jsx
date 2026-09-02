@@ -21,10 +21,22 @@ export default function RequireAuth ({role, children}) {
                 return;
             }
 
-            if(role && session.user.role != role){
-                navigate("/");
-                return;
+            if(role){
+                let isRole;
+
+                if (Array.isArray(role)) {
+                    isRole = role.includes(session.user.role);
+                } else {
+                    isRole = session.user.role == role;
+
+                }
+
+                if (!isRole) {
+                    navigate("/");
+                    return;
+                }
             }
+
 
             setCanAccess(true);
 

@@ -195,7 +195,7 @@ useEffect(() => {
 
 
 
-                    <button className="secondary" onClick={() => setStep(1)}>Go Back</button>
+                    <button className="secondary" onClick={() => setStep(2)}>Go Back</button>
                     <button onClick={() => { setStartDatetime(slota.start_datetime);
                                 setEndDatetime(slota.end_datetime);
                         setStep(4)}} disabled={!slota} >Next</button>
@@ -212,12 +212,12 @@ useEffect(() => {
 
                         </div>
                          <div>
-                            <label>Email</label>
+                            <label>Email *</label>
                                  <input type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)}/>
 
                         </div>
                          <div>
-                            <label>Phone*</label>
+                            <label>Phone</label>
                                  <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)}/>
 
                         </div>

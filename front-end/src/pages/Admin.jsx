@@ -235,6 +235,14 @@ async function barbershopSave() {
   }
 }
 
+ function formatDateTime(isoString) {
+    const datePart = isoString.slice(0, 10);
+    const timePart = isoString.slice(11, 16);
+    return `${datePart} ${timePart}`;
+  }
+
+
+
 
 
   return (
@@ -242,9 +250,9 @@ async function barbershopSave() {
       {message && <p>{message}</p>}
          <h1 className="text-center" >Admin</h1>
 
-     <div className="nav-2">
+     <div className="admin-buttons">
      <div className="btn-group" role="group" aria-label="Basic example" >
-      <button type="button" className="btn btn-primary btn-lg" onClick={() => setStep("1")}>Apointmentts</button>
+      <button type="button" className="btn btn-primary btn-lg" onClick={() => setStep("1")}>Appointments</button>
       <button type="button" className="btn btn-primary btn-lg" onClick={() => setStep("2")}>Services</button>
       <button type="button" className="btn btn-primary btn-lg" onClick={() => setStep("3")}>Add Employee</button>
       <button type="button" className="btn btn-primary btn-lg " onClick={() => setStep("4")}>Barbereshop</button>
@@ -257,7 +265,7 @@ async function barbershopSave() {
           
           <h2>Appointments</h2>
          <div>
-            <label>Emplyoee: </label>
+            <label>Employee: </label>
                     <select className="form-select" value={filterByEmployee} onChange={(e) => setFilterByEmployee(e.target.value)}>
                      <option value="" >All employees</option>
                        {employeeOpt.map((empl) => (
@@ -268,19 +276,31 @@ async function barbershopSave() {
           </div>
                   <p>All appointments: {totalApp}</p>
 
-                  <h2>Up Coming</h2>
+                  <h2>Upcoming</h2>
                        
               {upcomng.map((app) => (
       
     
-           <div key={app.id}>
-              <p>{app.start_datetime} — {app.customer_name} — {app.employeeName} — {app.serviceName} — {app.status}</p>
+           <div key={app.id} className="appointment-row">
+              <div>
+
+
+                    <p className="when">{formatDateTime(app.start_datetime)}</p>
+                    
+                    <p className="details">{app.customer_name} — {app.employeeName} — {app.serviceName} — {app.status}</p>
+                 
+                  </div>
+
+
                 
                 
+                <div className="actions" >
+                <button className="btn btn-success btn-sm" onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
+                 <button className="btn btn-danger btn-sm" onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
+                    <button className="btn btn-primary btn-sm" onClick={() => updateStatus(app.id, "completed")}>Complete</button>
                 
-                <button onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
-                 <button onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
-                    <button onClick={() => updateStatus(app.id, "completed")}>Complete</button>
+                
+                  </div>
     </div>
 
     
@@ -290,14 +310,25 @@ async function barbershopSave() {
                     
               {past.map((app) => (
            
-           <div key={app.id}>
-              <p>{app.start_datetime} — {app.customer_name} — {app.employeeName} — {app.serviceName} — {app.status}</p>
+           <div key={app.id} className="appointment-row">
+             <div>
+
+
+                    <p className="when">{formatDateTime(app.start_datetime)}</p>
+
+
+                    <p className="details">{app.customer_name} — {app.employeeName} — {app.serviceName} — {app.status}</p>
+                  </div>
                 
                 
                 
-                <button onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
-                 <button onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
-                    <button onClick={() => updateStatus(app.id, "completed")}>Complete</button>
+                    <div className="actions" >
+                <button className="btn btn-success btn-sm" onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
+                 <button className="btn btn-danger btn-sm" onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
+                    <button className="btn btn-primary btn-sm" onClick={() => updateStatus(app.id, "completed")}>Complete</button>
+                
+                
+                  </div>
     </div>
     
           ))}
@@ -309,7 +340,7 @@ async function barbershopSave() {
         <section>
             <h2>Services</h2>
                 {services.map((ser) => (
-                    <div key={ser.id}>
+                    <div key={ser.id} className="break-row" >
                         <p>{ser.name} — {ser.duration_min} min — {ser.price} €</p>
                     </div>
           ))}
@@ -349,7 +380,7 @@ async function barbershopSave() {
 
       {step == "3" && (
         <section>
-             <h2>Adde Employee</h2>
+             <h2>Add Employee</h2>
           <div>
              <label>User ID</label>
                   <input type="number" value={newEmpUserId} onChange={(e) => setNewEmpUserId(e.target.value)} />
@@ -413,3 +444,5 @@ async function barbershopSave() {
     </main>
   );
 }
+
+

@@ -7,7 +7,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phone, setPhoneNumber] = useState("");
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -25,7 +25,7 @@ export default function Register() {
           last_name,
           email,
           password,
-          phoneNumber,
+          phone,
         }),
       });
 
@@ -70,7 +70,7 @@ export default function Register() {
             <label>Phone number</label>
             <input 
               type="text"
-              value={phoneNumber}
+              value={phone}
               onChange={(event) => setPhoneNumber(event.target.value)}
             
             />

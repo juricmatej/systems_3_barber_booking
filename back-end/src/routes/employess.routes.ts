@@ -33,11 +33,12 @@ const addEmployee = async (
 
     const isJobless = await checkForEmployment(user_id, barbershop_id);
 
-    if (isJobless > 0) {
+    if (isJobless.length > 0) {
         res.status(400).json({
             success: false,
             message: "This guy alraedy works here„"
         })
+        return;
     }
 
     const queryResult = await createEmployee(user_id, barbershop_id, display_name, bio ?? "");

@@ -2,7 +2,7 @@ import { API_URL } from "../api/api";
 import { useState, useEffect } from "react";
 
 
-const dayNames = ["", "Monday", "Tuesday", "Wednsday", "Thursday", "Firday", "Sunday", "Saturday"];
+const dayNames = ["", "Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 export default function Barber() {
     
@@ -202,7 +202,8 @@ export default function Barber() {
       const data = await res.json();
 
       if(res.ok) {
-        setMessage("Sucsefulle operation")
+        setMessage("Successful operation")
+        loadSchedule();
       } else {
         setMessage(data.message)
       }
@@ -211,11 +212,22 @@ export default function Barber() {
     }catch (err) {
       console.log(err);
 
+
+
+ 
+
     
 
 
   }
+
   } 
+
+  function formatDateTime(isoString) {
+    const datePart = isoString.slice(0, 10);
+    const timePart = isoString.slice(11, 16);
+    return `${datePart} ${timePart}`;
+  }
 
    if (!employee) {
     return (
@@ -250,11 +262,25 @@ export default function Barber() {
         <section>
              <h2>Appointments</h2>
           {appointments.map((app) => (
-            <div key={app.id}>
-              <p>{app.start_datetime} — {app.customer_name} — {app.service_name} — {app.status}</p>
-                 <button onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
-                    <button onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
-                        <button onClick={() => updateStatus(app.id, "completed")}>Complete</button>
+
+
+            <div key={app.id} className="appointment-row">
+
+              <div>
+            <p className="when">{formatDateTime(app.start_datetime)}</p>
+            <p className="details">{app.customer_name} — {app.service_name} — {app.status}</p>
+        </div>
+
+               
+                <div className="actions" >
+                <button className="btn btn-success btn-sm" onClick={() => updateStatus(app.id, "confirmed")}>Confirm</button>
+                 <button className="btn btn-danger btn-sm" onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
+                    <button className="btn btn-primary btn-sm" onClick={() => updateStatus(app.id, "completed")}>Complete</button>
+                
+                
+                  </div>
+
+                        
                 </div>
                        
                        
@@ -268,15 +294,46 @@ export default function Barber() {
       {step == 2 && (
         <section>
                 <h2>Schedule</h2>
-          {schedule.map((day) => (
-       
-            <div key={day.id}>
-                   <p>
-                        {dayNames[day.day_of_week]} — {day.start_time} to {day.end_time}
-                        
-                              </p>
+          {schedule.map((day) => {
+            let breakText;
+
+            if (day.break_start && day.break_end) {
+              breakText = `(break: ${day.break_start} - ${day.break_end})`;
+            } else {
+              breakText = "";
+            }
+
+            let activeText;
+
+            if (day.is_active) {
+              activeText = "";
+              
+            } else {
+              activeText = " - Inactive day "
+            }
+
+            return (
+                
+               <div key={day.id} className="break-row" >
+
+                <p>
+                        {dayNames[day.day_of_week]} — {day.start_time} to {day.end_time}  {activeText}
+                       
+                         </p>
+
+                         <p className="breaks"> {breakText}</p>
+                
                     </div>
-            ))}
+          
+        
+        
+        );
+
+
+
+          })}
+
+
             <h3>Set your schedule:</h3>
             <div className="boxed-2">
             <div>
@@ -328,8 +385,10 @@ export default function Barber() {
         <section>
           <h2>Timeoff</h2>
           {timeOff.map((off) => (
-                <div key={off.id}>
-                     <p>{off.start_datetime} — {off.end_datetime} — {off.reason}</p>
+                <div key={off.id} className="break-row" >
+
+                   <p className="when">{formatDateTime(off.start_datetime)} to {formatDateTime(off.end_datetime)}</p>
+                     <p>Reason: {off.reason}</p>
                 
                 
                 </div>

@@ -21,7 +21,7 @@ export default function AppRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="/book" element={<BookingProvider> <Book/ > </BookingProvider>  } />
         <Route path="/admin" element={<RequireAuth role="admin"><Admin /></RequireAuth>}  />
-        <Route path="barber" element={<RequireAuth role="employee"><Barber /></RequireAuth>}/>
+        <Route path="/barber" element={<RequireAuth role={["employee", "admin"]}><Barber /></RequireAuth>}/>
 
 
 
