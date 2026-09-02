@@ -82,6 +82,9 @@ useEffect(() => {
   }, [employeeId, serviceId, selectedDate]);
 
 
+
+
+
   async function Submit() {
     try {
         const res = await fetch(`${API_URL}/appointments`, {
@@ -171,7 +174,7 @@ useEffect(() => {
                         
                         <label>Date selection:</label>
                         <br></br>
-                        <input type="date" value={selectedDate} onChange={(e) => {
+                        <input type="date" min={new Date().toISOString().slice(0, 10)} value={selectedDate} onChange={(e) => {
                             setSelectedDate(e.target.value);
                              setSlota(null);
               }} />

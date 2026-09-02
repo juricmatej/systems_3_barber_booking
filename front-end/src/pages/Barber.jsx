@@ -1,5 +1,5 @@
 import { API_URL } from "../api/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 
 
 const dayNames = ["", "Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -75,6 +75,44 @@ export default function Barber() {
     }, [employee]);
 
 
+    useEffect(() => {
+      const exists = schedule.find((day) => day.day_of_week == editDay);
+
+      if (exists) {
+        setEditStartTime(exists.start_time.slice(0, 5));
+        setEditEndTime(exists.end_time.slice(0, 5));
+
+      if (exists.break_start) {
+        setEditBreakStart(exists.break_start.slice(0, 5));
+
+      } else {
+        setEditBreakStart("");
+      }
+
+      if (exists.break_end) {
+        setEditBreakEnd(exists.break_end.slice(0, 5));
+
+      } else {
+        setEditBreakEnd("");
+      }
+
+      if (exists.is_active) {
+        setEditIsActive(true);
+      } else {
+        setEditIsActive(false);
+
+      } 
+
+      
+      } else {
+        setEditStartTime("08:00");
+        setEditEndTime("16:00");
+        setEditBreakStart("");
+        setEditBreakEnd("");
+        setEditIsActive(true);
+      }
+
+    }, [editDay, schedule]);
 
     async function loadAppointments() {
         try {
