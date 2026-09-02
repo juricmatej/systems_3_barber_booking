@@ -29,7 +29,13 @@ export default function Login() {
       if (res.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         setMessage("Login successful.");
-        window.location.href = "/admin";
+          if (data.user.role == "admin") {
+          window.location.href = "/admin";
+        } else if (data.user.role == "employee") {
+          window.location.href = "/barber";
+        } else {
+          window.location.href = "/";
+        }
       } else {
         setMessage(data.message || "Login failed.");
       }
@@ -63,7 +69,7 @@ export default function Login() {
             />
           </div>
 
-          <button type="submit">Login</button>
+          <button  className="btn btn-primary btn-lg"type="submit">Login</button>
         </form>
 
         {message && <p>{message}</p>}

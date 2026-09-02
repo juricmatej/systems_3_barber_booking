@@ -240,11 +240,14 @@ main section .time-slots {
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border: 1px solid gray;
-  border-radius: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  
   margin-bottom: 12px;
 }
 
+.boxed-like-a-fish:last-child {
+  border: none;
+}
 
 .service-left h2 {
   margin: 0 0 4px 0;
@@ -309,3 +312,62 @@ font-weight: 600;
   color: black;
 }
 
+
+.admin-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+   padding: 12px 16px;
+   
+  margin-bottom: 12px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+.time-slots button.selected {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.boxed-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb ;
+
+}
+
+.boxed-2 > div {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 4px;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.nav-2 {
+
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+
+.center-texts {
+
+  text-align: center;
+  margin-bottom: 5%;
+}

@@ -24,6 +24,16 @@ export default function Barber() {
     const [newTimeOffReason, setNewTimeOffReason] = useState("");
     const [timeOff, setTimeOff] = useState([]);
 
+
+
+
+    const [editDay, setEditDay] = useState(1);
+    const [editStartTime, setEditStartTime] = useState("09:00");
+    const [editEndTime, setEditEndTime] = useState("17:00");
+    const [editBreakStart, setEditBreakStart] = useState("");
+    const [editBreakEnd, setEditBreakEnd] = useState("");
+    const [editIsActive, setEditIsActive] = useState(true);
+
     
     
     const [message, setMessage] = useState("");
@@ -161,6 +171,52 @@ export default function Barber() {
     }
   }
 
+
+  async function putScheduleDay() {
+    setMessage("");
+    
+    try {
+       let isActiveValue;
+
+            if (editIsActive) {
+                isActiveValue = 1;
+            } else {
+                isActiveValue = 0;
+            }
+
+              const res = await fetch(`${API_URL}/schedule/${employee.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                    day_of_week: editDay,
+                    start_time: editStartTime,
+                    end_time: editEndTime,
+                    start_break: editBreakStart,
+                    end_break: editBreakEnd,
+                    is_active: isActiveValue,
+                }),
+            });
+
+            
+      const data = await res.json();
+
+      if(res.ok) {
+        setMessage("Sucsefulle operation")
+      } else {
+        setMessage(data.message)
+      }
+
+
+    }catch (err) {
+      console.log(err);
+
+    
+
+
+  }
+  } 
+
    if (!employee) {
     return (
       <main>
@@ -172,14 +228,23 @@ export default function Barber() {
 
   return (
     <main>
-      <h1>{employee.display_name}</h1>
+      <div className="nav-2">
+  
 
-      <button onClick={() => setStep(1)}>Appointments</button>
+        <div className="btn-group" role="group" aria-label="Basic example" >
+      <button type="button" className="btn btn-primary" onClick={() => setStep(1)}>Appointments</button>
 
 
-      <button onClick={() => setStep(2)}>Schedule</button>
+      <button  type="button" className="btn btn-primary" onClick={() => setStep(2)}>Schedule</button>
 
-      <button onClick={() => setStep(3)}>Timeoff</button>
+      <button type="button" className="btn btn-primary" onClick={() => setStep(3)}>Timeoff</button>
+          </div>
+          <h2>{employee.display_name}</h2>
+
+          
+
+    </div>
+
 
       {step == 1 && (
         <section>
@@ -204,15 +269,55 @@ export default function Barber() {
         <section>
                 <h2>Schedule</h2>
           {schedule.map((day) => (
+       
             <div key={day.id}>
                    <p>
                         {dayNames[day.day_of_week]} — {day.start_time} to {day.end_time}
                         
                               </p>
                     </div>
-            
-            
             ))}
+            <h3>Set your schedule:</h3>
+            <div className="boxed-2">
+            <div>
+                <label>Select day</label>
+    
+                <select className="form-select" value={editDay} onChange={(e) => setEditDay(Number(e.target.value))}>
+                    {dayNames.map((name, index) => {
+                        if (index == 0) {
+                            return null;
+                        }
+
+                        return <option key={index} value={index}>{name}</option>;
+                    })}
+                </select>
+            </div>
+             <div>
+                <label>Active?</label>
+                <input type="checkbox" checked={editIsActive} onChange={(e) => setEditIsActive(e.target.checked)} />
+            </div>
+            </div>
+            <div>
+                <label>Start time</label>
+                <input type="time" value={editStartTime} onChange={(e) => setEditStartTime(e.target.value)} />
+            </div>
+            <div>
+                <label>End time</label>
+                <input type="time" value={editEndTime} onChange={(e) => setEditEndTime(e.target.value)} />
+            </div>
+            <div>
+                <label>Break start (optional)</label>
+                <input type="time" value={editBreakStart} onChange={(e) => setEditBreakStart(e.target.value)} />
+            </div>
+            <div>
+                <label>Break end (optional)</label>
+                <input type="time" value={editBreakEnd} onChange={(e) => setEditBreakEnd(e.target.value)} />
+            </div>
+
+            <button className="btn btn-primary" onClick={putScheduleDay}>Save</button>
+         
+          {message && <p className="alert alert-primary">{message}</p>}
+            
         </section>
       )}
 
@@ -221,7 +326,7 @@ export default function Barber() {
 
       {step == 3 && (
         <section>
-          <h2>timeoff</h2>
+          <h2>Timeoff</h2>
           {timeOff.map((off) => (
                 <div key={off.id}>
                      <p>{off.start_datetime} — {off.end_datetime} — {off.reason}</p>
@@ -251,7 +356,7 @@ export default function Barber() {
 
            
             
-       <button onClick={addTimeOff}>Dodaj</button>
+       <button className="btn btn-primary" onClick={addTimeOff}>Dodaj</button>
         </section>
       )}
 

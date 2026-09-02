@@ -20,7 +20,7 @@ export default function Book(){
 
 
 
-
+    const [slota, setSlota] = useState(null);
     const [message, setMessage] = useState("");
 
 
@@ -118,7 +118,7 @@ useEffect(() => {
 
         <main>
 
-            <h1>Book a cut !</h1>
+            <h1 className="center-texts">Book a cut !</h1>
 
             {step == 1 && (
                 <section>
@@ -126,10 +126,10 @@ useEffect(() => {
                 {employees.map((empl) => (
                     <div className="boxed-like-a-fish" key={empl.id}>
                         <h2>{empl.display_name}</h2>
-                            <button onClick={() => { 
+                            <button className="btn btn-primary btn-lg" onClick={() => { 
                                 setEmployeeId(empl.id); 
                                 setStep(2);
-                                }}>
+                                }}> 
                             Choose
                             </button>
                     </div>
@@ -152,7 +152,7 @@ useEffect(() => {
                             <div className="price">
                         <p>{ser.duration_min} min - {ser.price} € </p>
                         </div>
-                            <button onClick={() => { 
+                            <button className="btn btn-primary"  onClick={() => { 
                                 setServiceId(ser.id); 
                                 setStep(3);}}>
                                 Choose
@@ -161,7 +161,7 @@ useEffect(() => {
                     </div>
                     
                 ) )}
-                    <button onClick={() => setStep(1)}>Go Back</button>
+                    <button className="btn btn-primary btn-lg" onClick={() => setStep(1)}>Go Back</button>
                 </section>
 
             )}
@@ -169,16 +169,19 @@ useEffect(() => {
                 <section>
                     <h1>Select time and date</h1>
                         
-                        <label>Date</label>
-                        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+                        <label>Date selection:</label>
+                        <br></br>
+                        <input type="date" value={selectedDate} onChange={(e) => {
+                            setSelectedDate(e.target.value);
+                             setSlota(null);
+              }} />
 
                          <div className="time-slots">
                          {freeSlots.map((slot) => (
-                              <button key={slot.start_datetime} onClick={() => {
-                                setStartDatetime(slot.start_datetime);
-                                setEndDatetime(slot.end_datetime);
-                                setStep(4);
-                                  }}
+                              <button key={slot.start_datetime} className={slota?.start_datetime == slot.start_datetime ? "selected" : ""} 
+                              onClick={() => setSlota(slot)}
+
+                                
                                                 >
                               {slot.start_datetime.slice(11, 16)}
              </button>
@@ -186,10 +189,16 @@ useEffect(() => {
         ))}
         </div>
 
+              {selectedDate && freeSlots.length == 0 &&(
+                <p>There are no free slots for this date!</p>
+              )}
+
 
 
                     <button className="secondary" onClick={() => setStep(1)}>Go Back</button>
-                    <button onClick={() => setStep(4)}>Next</button>
+                    <button onClick={() => { setStartDatetime(slota.start_datetime);
+                                setEndDatetime(slota.end_datetime);
+                        setStep(4)}} disabled={!slota} >Next</button>
 
                 </section>
 
@@ -198,7 +207,7 @@ useEffect(() => {
                 <section>
                     <h1>Your Information</h1>
                         <div>
-                            <label>Name and surname*</label>
+                            <label>Name *</label>
                                  <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)}/>
 
                         </div>
@@ -218,8 +227,8 @@ useEffect(() => {
 
                         </div>
 
-                    <button onClick={() => setStep(3)}>Go Back</button>
-                    <button onClick={Submit}>Book !</button>
+                    <button className="btn btn-primary btn-lg" onClick={() => setStep(3)}>Go Back</button>
+                    <button  className="btn btn-primary btn-lg" onClick={Submit}>Book !</button>
 
                 </section>
 

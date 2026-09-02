@@ -50,7 +50,7 @@ if (barbershop){
       <section className="news-hero">
         {top}
         <Link to="/book">
-        <button>Rezerviraj termin </button>
+        <button className="btn btn-primary ">Rezerviraj termin </button>
         </Link>
       </section>
 

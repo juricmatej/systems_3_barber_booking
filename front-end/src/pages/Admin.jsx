@@ -239,24 +239,27 @@ async function barbershopSave() {
 
   return (
     <main>
-      <h1>Admin</h1>
-
       {message && <p>{message}</p>}
+         <h1 className="text-center" >Admin</h1>
 
-      <button onClick={() => setStep("1")}>Apointmentts</button>
-      <button onClick={() => setStep("2")}>Services</button>
-      <button onClick={() => setStep("3")}>ADD Employee</button>
-      <button onClick={() => setStep("4")}>Barbereshop</button>
-
+     <div className="nav-2">
+     <div className="btn-group" role="group" aria-label="Basic example" >
+      <button type="button" className="btn btn-primary btn-lg" onClick={() => setStep("1")}>Apointmentts</button>
+      <button type="button" className="btn btn-primary btn-lg" onClick={() => setStep("2")}>Services</button>
+      <button type="button" className="btn btn-primary btn-lg" onClick={() => setStep("3")}>Add Employee</button>
+      <button type="button" className="btn btn-primary btn-lg " onClick={() => setStep("4")}>Barbereshop</button>
+        </div>
+   
+        </div>
 
       {step == "1" && (
         <section>
           
           <h2>Appointments</h2>
          <div>
-            <label>Emplyoee</label>
-                    <select value={filterByEmployee} onChange={(e) => setFilterByEmployee(e.target.value)}>
-                     <option value="">All employeees</option>
+            <label>Emplyoee: </label>
+                    <select className="form-select" value={filterByEmployee} onChange={(e) => setFilterByEmployee(e.target.value)}>
+                     <option value="" >All employees</option>
                        {employeeOpt.map((empl) => (
                      <option key={empl.id} value={empl.id}>{empl.name}</option>
                                         ))}
@@ -265,9 +268,11 @@ async function barbershopSave() {
           </div>
                   <p>All appointments: {totalApp}</p>
 
-                  <h2>UPComing</h2>
+                  <h2>Up Coming</h2>
+                       
               {upcomng.map((app) => (
-           
+      
+    
            <div key={app.id}>
               <p>{app.start_datetime} — {app.customer_name} — {app.employeeName} — {app.serviceName} — {app.status}</p>
                 
@@ -277,10 +282,12 @@ async function barbershopSave() {
                  <button onClick={() => updateStatus(app.id, "cancelled")}>Cancel</button>
                     <button onClick={() => updateStatus(app.id, "completed")}>Complete</button>
     </div>
+
     
           ))}
 
                   <h2>Past</h2>
+                    
               {past.map((app) => (
            
            <div key={app.id}>
@@ -294,6 +301,7 @@ async function barbershopSave() {
     </div>
     
           ))}
+              
         </section>
       )}
 

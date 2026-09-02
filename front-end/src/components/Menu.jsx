@@ -45,10 +45,12 @@ export default function Menu() {
 
   if (!user) {
     return (
-      <nav>
+      <nav className="navbar">
         <Link to="/">Home</Link>
+        <div>
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
+        </div>
       </nav>
     );
   }
@@ -57,11 +59,11 @@ export default function Menu() {
 
   return (
     <nav>
-      <Link to="/">Homes</Link>
+      <Link to="/">Home</Link>
       {user.role == "admin" && <Link to="/admin">Admin</Link>}
       {user.role == "employee" && <Link to="/barber">Employee</Link>}
       <span>Logged in as: {user.email}</span>
-      <button onClick={handleLogout}>Logout</button>
+      <button className="btn btn-primary" onClick={handleLogout}>Logout</button>
     </nav>
   );
 }

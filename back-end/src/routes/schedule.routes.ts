@@ -54,7 +54,23 @@ const setScheduleDay = async (
         return;
     }
 
-    const queryResult = await ScheduleDay(Number(employee_id), day_of_week, start_time ?? "", end_time ?? "", start_break ?? "", end_break ?? "", is_active ?? 1);
+    let convertBreakValue;
+
+    if (start_break) {
+      convertBreakValue = start_break;
+    } else {
+      convertBreakValue = null
+    }
+
+    let convertEndBreakValue 
+
+    if ( end_break) {
+      convertEndBreakValue = end_break;
+    } else {
+      convertEndBreakValue = null;
+    }
+
+    const queryResult = await ScheduleDay(Number(employee_id), day_of_week, start_time ?? "", end_time ?? "", convertBreakValue, convertEndBreakValue, is_active ?? 1);
     res.status(200).json({
         success: true,
         message: "Schedule updated",

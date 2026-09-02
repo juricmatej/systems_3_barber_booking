@@ -330,8 +330,8 @@ export const ScheduleDay = async (
   day_of_week: number,
   start_time: string,
   end_time: string,
-  break_start: string,
-  break_end: string,
+  break_start: string | null,
+  break_end: string | null,
   is_active: number,
   
 ): Promise<ResultSetHeader> => {
