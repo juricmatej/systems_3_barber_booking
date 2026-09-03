@@ -8,6 +8,8 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [phone, setPhoneNumber] = useState("");
+  const [regID, setRegID] = useState(null);
+
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -34,8 +36,10 @@ export default function Register() {
 
       if (res.ok) {
         setMessage("Register sucessful");
+        setRegID(data.user_id);
       } else {
         setMessage(data.message || "Register failed.");
+        setRegID(null);
       }
     } catch (err) {
       console.log("Login error:", err);
@@ -98,6 +102,9 @@ export default function Register() {
         </form>
 
         {message && <p>{message}</p>}
+        {regID && <p>Your ID: {regID},  <p>Please, remeber your id !</p></p>}
+       
+
       </section>
     </main>
   );

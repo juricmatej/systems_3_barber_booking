@@ -120,6 +120,16 @@ const registerUser = async (
       return;
     }
 
+    const userExists = await getUserByEmail(email);
+
+    if (userExists.length > 0){
+      res.status(400).json({
+        success: false,
+        message: "User with this email already exists !"
+      })
+      return;
+    }
+
     const queryResult = await createUser(first_name, last_name, phone ?? null, email, password, );
 
     if (queryResult.affectedRows === 1) {

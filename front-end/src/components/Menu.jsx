@@ -62,7 +62,7 @@ export default function Menu() {
       <Link to="/">Home</Link>
       {user.role == "admin" && <Link to="/admin">Admin</Link>}
       {(user.role == "employee" || user.role == "admin") && <Link to="/barber">Employee</Link>}
-      <span>Logged in as: {user.email}</span>
+      <span>Logged in as: {user.email} ID: {user.id}</span>
       <button className="btn btn-primary" onClick={handleLogout}>Logout</button>
     </nav>
   );
